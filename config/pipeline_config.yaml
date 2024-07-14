@@ -9,4 +9,8 @@ output: /path/to/output/directory
 multi_to_single_fast5_path: /path/to/multi_to_single_fast5
 nanopolish_path: /path/to/nanopolish
 aligner_path: /path/to/minimap2
-threads: 4
+pycoqc_path: /path/to/pycoQC
+geluster_path: /path/to/Geluster
+sequencing_summary: /path/to/sequencing_summary.txt #This file is obtained from the basecalling.
+bam: path/to/bam.bam # This file is obtained from original basecalling to reference sequence.
+threads: 4 # Default threads
