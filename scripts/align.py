@@ -22,13 +22,6 @@ def parse_args():
 def align_and_filter_reads(fastq, reference, output, threads, aligner_path):
     """
     Align and filter FASTQ reads using minimap2 and samtools.
-
-    Parameters:
-    fastq (str): Path to the concatenated FASTQ file.
-    reference (str): Path to the reference genome file.
-    output (str): Path to the output directory where alignment results will be saved.
-    threads (int): Number of threads to use for the operation.
-    aligner_path (str): Path to the aligner executable (minimap2).
     """
     bam_path = os.path.join(output, os.path.basename(fastq).replace(".fastq", ".bam"))
     sorted_bam_path = bam_path.replace(".bam", ".sorted.bam")
