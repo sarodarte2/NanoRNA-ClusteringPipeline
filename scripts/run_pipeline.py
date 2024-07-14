@@ -30,7 +30,7 @@ def setup_output_directories(base_output):
         'index_output': output_dir / 'index',
         'alignment_output': output_dir / 'alignment',
         'cluster_output': output_dir / 'cluster',
-        'multiqc_output': output_dir / 'multiqc',
+        'pycoqc_output': output_dir / 'pycoqc',
         'log_output': output_dir / 'logs'
     }
     for subdir in subdirs.values():
@@ -72,18 +72,13 @@ def main():
     align_script = Path(__file__).parent / "align.py"
     check_call(f"python3 {align_script} --config {config_file} --output {subdirs['alignment_output']}".split())
 
-    # Step 4: Generate MultiQC report
-    multiqc_script = Path(__file__).parent / "multiqc_report.py"
-    check_call(f"python3 {multiqc_script} --config {config_file} --output {subdirs['multiqc_output']}".split())
+    # Step 4: Generate PycoQC report
+    pycoqc_script = Path(__file__).parent / "pycoqc_report.py"
+    check_call(f"python3 {pycoqc_script} --config {config_file} --output {subdirs['pycoqc_output']}".split())
 
-    # Step 5: Cluster reads (optional)
-    if input("Would you like to include additional samples for clustering? (y/n): ").strip().lower() == 'y':
-        additional_samples = input("Enter the paths to additional sample FASTQ files, separated by commas: ")
-        cluster_script = Path(__file__).parent / "cluster_reads.py"
-        check_call(f"python3 {cluster_script} --config {config_file} --output {subdirs['cluster_output']} --additional_samples {additional_samples}".split())
-    else:
-        cluster_script = Path(__file__).parent / "cluster_reads.py"
-        check_call(f"python3 {cluster_script} --config {config_file} --output {subdirs['cluster_output']}".split())
+    # Step 5: Cluster reads
+    cluster_script = Path(__file__).parent / "cluster_reads.py"
+    check_call(f"python3 {cluster_script} --config {config_file} --output {subdirs['cluster_output']}".split())
 
     logging.info("Pipeline completed successfully.")
     print(f"Pipeline completed successfully. Log file: {log_file}")
