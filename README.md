@@ -18,8 +18,8 @@ This repository contains the NanoRNA-ClusteringPipeline, designed for analyzing 
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/your-username/rna-seq-pipeline.git
-cd rna-seq-pipeline
+git clone https://github.com/sarodarte2/NanoRNA-ClusteringPipeline.git
+cd NanoRNA-ClusteringPipeline
 ```
 
 ### Set Up a Virtual Environment
