@@ -87,12 +87,6 @@ threads: 4
 multi_to_single_fast5_path: /path/to/multi_to_single_fast5
 nanopolish_path: /path/to/nanopolish
 aligner_path: /path/to/minimap2
-data:
-  logs: /path/to/output/directory/logs
-  split_fast5: /path/to/output/directory/split_fast5
-  aligned_reads: /path/to/output/directory/aligned_reads
-  clustered_reads: /path/to/output/directory/clustered_reads
-  multiqc_report: /path/to/output/directory/multiqc_report
 ```
 
 
