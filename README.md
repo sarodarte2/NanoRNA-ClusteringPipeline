@@ -74,15 +74,6 @@ Install additional tools:
   ```bash
   pip install multiqc
   ```
-
-## Usage
-
-### Running the Pipeline
-To run the pipeline, use the following command:
-```bash
-python3 run_pipeline.py --config /path/to/your/pipeline_config.yaml
-```
-
 ### Configuration
 
 The pipeline requires a configuration file in YAML format. Here is an example `pipeline_config.yaml`:
@@ -102,6 +93,15 @@ data:
   aligned_reads: /path/to/output/directory/aligned_reads
   clustered_reads: /path/to/output/directory/clustered_reads
   multiqc_report: /path/to/output/directory/multiqc_report
+```
+
+
+## Usage
+
+### Running the Pipeline
+To run the pipeline, use the following command:
+```bash
+python3 run_pipeline.py --config /path/to/your/pipeline_config.yaml
 ```
 
 ## Pipeline Steps
