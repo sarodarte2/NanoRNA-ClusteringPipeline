@@ -4,7 +4,7 @@ Cluster reads.
 """
 
 import os
-from subprocess import check_call
+from subprocess import check_call, CalledProcessError
 from argparse import ArgumentParser
 from pathlib import Path
 import config
@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument('--additional_samples', type=str, help="Paths to additional sample FASTQ files, separated by commas", default="")
     return parser.parse_args()
 
-def cluster_reads(fastq, output, threads, additional_samples):
+def cluster_reads(fastq, output, threads, additional_samples, geluster_path):
     """
     Cluster reads using GeLuster.
 
@@ -30,13 +30,17 @@ def cluster_reads(fastq, output, threads, additional_samples):
     threads (int): Number of threads to use for the operation.
     additional_samples (str): Comma-separated list of paths to additional sample FASTQ files.
     """
-    if additional_samples:
-        additional_samples_flag = f"--multi {additional_samples}"
-    else:
-        additional_samples_flag = ""
-    
-    check_call(f"GeLuster -r {fastq} -t {threads} -o {output} {additional_samples_flag}".split())
-    logging.info(f"Reads clustered and saved to: {output}")
+    os.makedirs(output, exist_ok=True)
+
+    additional_samples_flag = f"--multi {additional_samples}" if additional_samples else ""
+
+    try:
+        check_call(f"{geluster_path} -r {fastq} -t {threads} -s dRNA -f fq -o {output} {additional_samples_flag}".split())
+        logging.info(f"Reads clustered and saved to: {output}")
+    except CalledProcessError as e:
+        logging.error(f"GeLuster failed with exit status {e.returncode}")
+        logging.error(f"Command: {e.cmd}")
+        logging.error(f"Output: {e.output}")
 
 def main():
     """
@@ -48,7 +52,7 @@ def main():
     cfg = config.load_config(config_file)
 
     additional_samples = args.additional_samples
-    cluster_reads(cfg['fastq'], Path(output), cfg['threads'], additional_samples)
+    cluster_reads(cfg['fastq'], Path(output), cfg['threads'], additional_samples, cfg['geluster_path'])
 
 if __name__ == "__main__":
     main()
