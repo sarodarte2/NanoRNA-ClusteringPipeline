@@ -1,8 +1,12 @@
-fastq: /home/koculilab/Documents/Internship/ExperimentalData/IVT_SignalAlign.fastq
-reference: /home/koculilab/Documents/Internship/ExperimentalData/23rRNA.fa
-fast5: /home/koculilab/Documents/Internship/ExperimentalData/IVT_SignalAlign/IVT_Replicate1/fast5
-output: /home/koculilab/Documents/Internship/ExperimentalData
-multi_to_single_fast5_path: /home/koculilab/Documents/Internship/New_Pipeline/env/bin/multi_to_single_fast5
-nanopolish_path: /home/koculilab/Documents/Internship/New_Pipeline/scripts/nanopolish
-aligner_path: /usr/bin/minimap2
+# Substitute the paths with the correct paths to both programs and inputs/outputs
+
+# To obtain the path for a program use which "program_name" to find the program/dependency. 
+
+fast5: /path/to/your/fast5/files
+fastq: /path/to/your/combined.fastq
+reference: /path/to/your/reference.fasta
+output: /path/to/output/directory
+multi_to_single_fast5_path: /path/to/multi_to_single_fast5
+nanopolish_path: /path/to/nanopolish
+aligner_path: /path/to/minimap2
 threads: 4
