@@ -1,0 +1,8 @@
+fastq: /home/koculilab/Documents/Internship/ExperimentalData/IVT_SignalAlign.fastq
+reference: /home/koculilab/Documents/Internship/ExperimentalData/23rRNA.fa
+fast5: /home/koculilab/Documents/Internship/ExperimentalData/IVT_SignalAlign/IVT_Replicate1/fast5
+output: /home/koculilab/Documents/Internship/ExperimentalData
+multi_to_single_fast5_path: /home/koculilab/Documents/Internship/New_Pipeline/env/bin/multi_to_single_fast5
+nanopolish_path: /home/koculilab/Documents/Internship/New_Pipeline/scripts/nanopolish
+aligner_path: /usr/bin/minimap2
+threads: 4
