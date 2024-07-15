@@ -137,7 +137,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - [minimap2](https://github.com/lh3/minimap2)
 - [samtools](https://github.com/samtools/samtools)
 - [GeLuster](https://github.com/GeLuster)
-- [PycoQC][(https://github.com/ewels/MultiQC)](https://github.com/a-slide/pycoQC)
+- [PycoQC](https://github.com/a-slide/pycoQC)
 
 ## Contributing
 
