@@ -70,9 +70,9 @@ Install additional tools:
   export PATH=$PATH:$(pwd)
   ```
 
-- [MultiQC](https://github.com/ewels/MultiQC)
+- [PycoQC](https://github.com/a-slide/pycoQC)
   ```bash
-  pip install multiqc
+  pip install pycoqc
   ```
 ### Configuration
 
@@ -83,10 +83,14 @@ fast5: /path/to/your/fast5/files
 fastq: /path/to/your/combined.fastq
 reference: /path/to/your/reference.fasta
 output: /path/to/output/directory
-threads: 4
 multi_to_single_fast5_path: /path/to/multi_to_single_fast5
 nanopolish_path: /path/to/nanopolish
 aligner_path: /path/to/minimap2
+pycoqc_path: /path/to/pycoQC
+geluster_path: /path/to/Geluster
+sequencing_summary: /path/to/sequencing_summary.txt #This file is obtained from the basecalling.
+bam: path/to/bam.bam # This file is obtained from original basecalling to reference sequence.
+threads: 4 # Default threads
 ```
 
 
@@ -120,7 +124,7 @@ Ensure all the required tools are installed and accessible in your system's PATH
 - Minimap2
 - Samtools
 - GeLuster
-- MultiQC
+- PycoQC
 
 ## License
 
@@ -133,7 +137,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - [minimap2](https://github.com/lh3/minimap2)
 - [samtools](https://github.com/samtools/samtools)
 - [GeLuster](https://github.com/GeLuster)
-- [MultiQC](https://github.com/ewels/MultiQC)
+- [PycoQC][(https://github.com/ewels/MultiQC)](https://github.com/a-slide/pycoQC)
 
 ## Contributing
 
