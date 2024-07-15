@@ -30,7 +30,16 @@ source env/bin/activate
 ```
 
 ### Install Dependencies
-Install the required Python packages:
+Ensure all the required tools are installed and accessible in your system's PATH:
+- Python 3
+- ont-fast5-api
+- Nanopolish
+- Minimap2
+- Samtools
+- GeLuster
+- PycoQC
+  
+Install the required Python packages to commpliment the main ones described above:
 ```bash
 pip install -r requirements.txt
 ```
@@ -114,17 +123,6 @@ python3 run_pipeline.py --config /path/to/your/pipeline_config.yaml
 ## Logging
 
 A single log file is generated for each pipeline run, located in the `logs` directory specified in the configuration file. The log file is named with the current date and time for easy identification.
-
-## Dependencies
-
-Ensure all the required tools are installed and accessible in your system's PATH:
-- Python 3
-- ont-fast5-api
-- Nanopolish
-- Minimap2
-- Samtools
-- GeLuster
-- PycoQC
 
 ## License
 
