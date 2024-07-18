@@ -1,13 +1,38 @@
-aligner_path: /usr/bin/minimap2
-fast5: /home/salvador/Documents/ivt/fast5
-fastq: /home/salvador/Documents/ivt/ivt_sup.fastq
-geluster_path: /home/salvador/Documents/NanoRNA-ClusteringPipeline/tools/GeLuster/GeLuster
-multi_to_single_fast5_path: /home/salvador/Documents/NanoRNA-ClusteringPipeline/env/bin/multi_to_single_fast5
-nanopolish_path: /home/salvador/Documents/NanoRNA-ClusteringPipeline/tools/nanopolish/nanopolish
-output: /home/salvador/Documents/pipeline_runs
-pycoqc_path: /home/salvador/Documents/NanoRNA-ClusteringPipeline/env/bin/pycoQC
-reference: /home/salvador/Documents/23rRNA.fa
-samtools_path: /usr/bin/samtools
-sequencing_summary: /home/salvador/Documents/ivt/sequencing_summary.txt
-sorted_bam: /home/salvador/Documents/pipeline_runs/20240716_224835_output/alignment/ivt_sup.sorted.bam
+# Path to the Minimap2 executable.
+aligner_path: /path/to/minimap2
+
+# Directory containing the input FAST5 files.
+fast5: /path/to/fast5_directory
+
+# Path to the input FASTQ file.
+fastq: /path/to/input_fastq_file.fastq
+
+# Path to the GeLuster executable.
+geluster_path: /path/to/GeLuster/GeLuster
+
+# Path to the multi_to_single_fast5 executable (from the ONT fast5 API).
+multi_to_single_fast5_path: /path/to/multi_to_single_fast5
+
+# Path to the Nanopolish executable.
+nanopolish_path: /path/to/nanopolish/nanopolish
+
+# Directory where the pipeline outputs will be stored.
+output: /path/to/pipeline_outputs
+
+# Path to the PycoQC executable.
+pycoqc_path: /path/to/pycoQC
+
+# Path to the reference genome file.
+reference: /path/to/reference_genome.fa
+
+# Path to the Samtools executable.
+samtools_path: /path/to/samtools
+
+# Path to the sequencing summary file.
+sequencing_summary: /path/to/sequencing_summary.txt
+
+# Path to the sorted BAM file (output from the alignment step).
+sorted_bam: /path/to/sorted_output.bam
+
+# Number of threads to use for the operations.
 threads: 10
