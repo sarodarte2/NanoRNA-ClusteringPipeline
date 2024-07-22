@@ -105,12 +105,12 @@ docker run -e FASTQ_PATH=/path/to/fastq -e FAST5_PATH=/path/to/fast5 -e REF_PATH
 - PycoQC
 
 ## Pipeline Steps
-1. Split FAST5 Files: Converts multi-read FAST5 files into single-read FAST5 files.
-2. Index Reads: Indexes reads from the FAST5 and FASTQ files using Nanopolish.
-3. Align and Filter Reads: Aligns FASTQ reads to a reference genome using Minimap2 and sorts the alignments with Samtools.
-4. Generate PycoQC Report: Generates a quality control report using PycoQC.
-5. Cluster Reads: Clusters RNA reads using GeLuster, with support for clustering multiple samples.
-6. Estimate Poly(A) Tail Lengths: Estimates the lengths of Poly(A) tails using Nanopolish.
+1. **Split FAST5 Files:** Converts multi-read FAST5 files into single-read FAST5 files.
+2. **Index Reads:** Indexes reads from the FAST5 and FASTQ files using Nanopolish.
+3. **Align and Filter Reads:** Aligns FASTQ reads to a reference genome using Minimap2 and sorts the alignments with Samtools.
+4. **Generate PycoQC Report:** Generates a quality control report using PycoQC.
+5. **Cluster Reads:** Clusters RNA reads using GeLuster, with support for clustering multiple samples.
+6. **Estimate Poly(A) Tail Lengths:** Estimates the lengths of Poly(A) tails using Nanopolish.
 
 ## Logging
 A single log file is generated for each pipeline run, located in the 'logs' directory specified in the configuration file. The log file is named with the current date and time for easy identification.
