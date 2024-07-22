@@ -21,6 +21,7 @@ def align_and_filter_reads(fastq, reference, output, threads, aligner_path):
     bam_path = os.path.join(output, os.path.basename(fastq).replace(".fastq", ".bam"))
     sorted_bam_path = bam_path.replace(".bam", ".sorted.bam")
 
+    # Use hyperparameterized minimap2 command
     p1 = Popen(f"{aligner_path} -ax splice -uf -k14 {reference} {fastq}".split(), stdout=PIPE)
     p2 = Popen(f"samtools sort -@ {threads} -o {sorted_bam_path}".split(), stdin=p1.stdout)
     p1.stdout.close()
@@ -50,4 +51,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
