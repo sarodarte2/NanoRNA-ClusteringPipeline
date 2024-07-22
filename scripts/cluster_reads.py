@@ -33,9 +33,12 @@ def cluster_reads(fastq, output, threads, additional_samples, geluster_path):
     os.makedirs(output, exist_ok=True)
 
     additional_samples_flag = f"--multi {additional_samples}" if additional_samples else ""
+    command = f"{geluster_path} -r {fastq} -i 6 -s dRNA -t {threads} -f fq -o {output} {additional_samples_flag}"
 
+    logging.info(f"Executing command: {command}")
+    print(f"Executing command: {command}")  # Print the command for debugging purposes
     try:
-        check_call(f"{geluster_path} -r {fastq} -t {threads} -s dRNA -f fq -o {output} {additional_samples_flag}".split())
+        check_call(command.split())
         logging.info(f"Reads clustered and saved to: {output}")
     except CalledProcessError as e:
         logging.error(f"GeLuster failed with exit status {e.returncode}")
@@ -56,3 +59,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -4,7 +4,7 @@ Index reads using Nanopolish and index BAM file using samtools.
 """
 
 import os
-from subprocess import check_call, CalledProcessError, Popen, PIPE
+from subprocess import check_call, CalledProcessError
 from argparse import ArgumentParser
 from pathlib import Path
 import config
@@ -19,12 +19,31 @@ def parse_args():
     parser.add_argument('--output', required=True, type=str, help="Output directory")
     return parser.parse_args()
 
-def index_reads(fast5, fastq, output, threads, nanopolish_path, sequencing_summary):
+def index_reads(fast5, fastq, output,nanopolish_path, sequencing_summary):
     """
     Index reads using Nanopolish.
     """
     os.makedirs(output, exist_ok=True)
     check_call(f"{nanopolish_path} index -d {fast5} -s {sequencing_summary} {fastq}".split())
+
+def index_split_fast5_dirs(split_fast5_output, index_output, fastq, nanopolish_path, sequencing_summary):
+    """
+    Index each subdirectory of the split FAST5 output directory using Nanopolish.
+    """
+    split_fast5_dirs = [d for d in Path(split_fast5_output).iterdir() if d.is_dir()]
+
+    for fast5_dir in split_fast5_dirs:
+        index_dir = Path(index_output) / fast5_dir.name
+        os.makedirs(index_dir, exist_ok=True)
+        try:
+            command = f"{nanopolish_path} index -d {fast5_dir} -s {sequencing_summary} {fastq}"
+            logging.info(f"Executing command: {command}")
+            check_call(command.split())
+            logging.info(f"Indexing completed for: {fast5_dir}")
+        except CalledProcessError as e:
+            logging.error(f"Nanopolish index failed for {fast5_dir} with exit status {e.returncode}")
+            logging.error(f"Command: {e.cmd}")
+            logging.error(f"Output: {e.output}")
 
 def main():
     """
@@ -38,6 +57,10 @@ def main():
     logging.info("Starting read indexing.")
     index_reads(cfg['fast5'], cfg['fastq'], Path(output), cfg['threads'], cfg['nanopolish_path'], cfg['sequencing_summary'])
     logging.info("Read indexing completed.")
+
+    logging.info("Starting split FAST5 subdirectory indexing.")
+    index_split_fast5_dirs(cfg['split_fast5_output'], cfg['index_output'], cfg['fastq'], cfg['nanopolish_path'], cfg['sequencing_summary'], cfg['threads'])
+    logging.info("Split FAST5 subdirectory indexing completed.")
 
 if __name__ == "__main__":
     main()

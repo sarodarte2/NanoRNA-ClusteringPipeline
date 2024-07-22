@@ -30,6 +30,7 @@ def setup_output_directories(base_output):
         'index_output': output_dir / 'index',
         'alignment_output': output_dir / 'alignment',
         'cluster_output': output_dir / 'cluster',
+        'polya_output': output_dir / 'polya',
         'pycoqc_output': output_dir / 'pycoqc',
         'log_output': output_dir / 'logs'
     }
@@ -63,22 +64,32 @@ def main():
     # Step 1: Split FAST5 files
     split_fast5_script = Path(__file__).parent / "split_fast5.py"
     check_call(f"python3 {split_fast5_script} --config {config_file} --output {subdirs['split_fast5_output']}".split())
+    logging.info("Step 1: Split FAST5 files completed successfully.")
 
     # Step 2: Index reads
     index_reads_script = Path(__file__).parent / "index_reads.py"
     check_call(f"python3 {index_reads_script} --config {config_file} --output {subdirs['index_output']}".split())
+    logging.info("Step 2: Index reads completed successfully.")
 
     # Step 3: Align and filter FASTQ reads
     align_script = Path(__file__).parent / "align.py"
     check_call(f"python3 {align_script} --config {config_file} --output {subdirs['alignment_output']}".split())
+    logging.info("Step 3: Align and filter FASTQ reads completed successfully.")
 
     # Step 4: Generate PycoQC report
     pycoqc_script = Path(__file__).parent / "pycoqc_report.py"
     check_call(f"python3 {pycoqc_script} --config {config_file} --output {subdirs['pycoqc_output']}".split())
+    logging.info("Step 4: Generate PycoQC report completed successfully.")
 
     # Step 5: Cluster reads
     cluster_script = Path(__file__).parent / "cluster_reads.py"
     check_call(f"python3 {cluster_script} --config {config_file} --output {subdirs['cluster_output']}".split())
+    logging.info("Step 5: Cluster reads completed successfully.")
+
+    # Step 6: Poly-A tail estimation
+    polya_script = Path(__file__).parent / "polya_estimation.py"
+    check_call(f"python3 {polya_script} --config {config_file} --output {subdirs['polya_output']}".split())
+    logging.info("Step 6: Poly-A tail estimation completed successfully.")
 
     logging.info("Pipeline completed successfully.")
     print(f"Pipeline completed successfully. Log file: {log_file}")

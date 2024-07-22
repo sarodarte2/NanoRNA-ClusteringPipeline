@@ -1,16 +1,38 @@
-# Substitute the paths with the correct paths to both programs and inputs/outputs
-
-# To obtain the path for a program use which "program_name" to find the program/dependency. 
-
-fast5: /path/to/your/fast5/files
-fastq: /path/to/your/combined.fastq
-reference: /path/to/your/reference.fasta
-output: /path/to/output/directory
-multi_to_single_fast5_path: /path/to/multi_to_single_fast5
-nanopolish_path: /path/to/nanopolish
+# Path to the Minimap2 executable.
 aligner_path: /path/to/minimap2
+
+# Directory containing the input FAST5 files.
+fast5: /path/to/fast5_directory
+
+# Path to the input FASTQ file.
+fastq: /path/to/input_fastq_file.fastq
+
+# Path to the GeLuster executable.
+geluster_path: /path/to/GeLuster/GeLuster
+
+# Path to the multi_to_single_fast5 executable (from the ONT fast5 API).
+multi_to_single_fast5_path: /path/to/multi_to_single_fast5
+
+# Path to the Nanopolish executable.
+nanopolish_path: /path/to/nanopolish/nanopolish
+
+# Directory where the pipeline outputs will be stored.
+output: /path/to/pipeline_outputs
+
+# Path to the PycoQC executable.
 pycoqc_path: /path/to/pycoQC
-geluster_path: /path/to/Geluster
-sequencing_summary: /path/to/sequencing_summary.txt #This file is obtained from the basecalling.
-bam: path/to/bam.bam # This file is obtained from original basecalling to reference sequence.
-threads: 4 # Default threads
+
+# Path to the reference genome file.
+reference: /path/to/reference_genome.fa
+
+# Path to the Samtools executable.
+samtools_path: /path/to/samtools
+
+# Path to the sequencing summary file.
+sequencing_summary: /path/to/sequencing_summary.txt
+
+# Path to the sorted BAM file (output from the alignment step).
+sorted_bam: /path/to/sorted_output.bam
+
+# Number of threads to use for the operations.
+threads: 10
