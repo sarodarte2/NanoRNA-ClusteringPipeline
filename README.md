@@ -2,6 +2,11 @@
 
 This repository contains the NanoRNA-ClusteringPipeline, designed for analyzing Direct RNA sequencing data from raw Oxford Nanopore Technologies (ONT) FAST5 files. The pipeline includes steps for splitting multi-read FAST5 files, indexing reads, aligning and filtering FASTQ reads, clustering RNA reads, and estimating Poly(A) tail lengths using a variety of tools.
 
+## Current Experimental Steps to Take
+1. Optional run for Nanopolish EventAlign.
+2. Setup GPU computing for F5C.
+3. Optional run for Modification (differential/raw-read) analysis.
+
 ## Table of Contents
 - [Installation](#installation)
 - [Configuration](#configuration)
