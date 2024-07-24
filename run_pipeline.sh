@@ -13,4 +13,4 @@ source ~/.bashrc
 CONFIG_FILE="config/pipeline_config.yaml"
 
 # Run the pipeline
-python scripts/run_pipeline.py --config "$CONFIG_FILE"
+python3 scripts/run_pipeline.py --config "$CONFIG_FILE"
