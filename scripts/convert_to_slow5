@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+"""
+Convert input files to SLOW5/BLOW5 format.
+"""
+
+import os
+import sys
+import yaml
+from pathlib import Path
+from subprocess import check_call, CalledProcessError
+
+def load_config(config_file):
+    with open(config_file, 'r') as file:
+        return yaml.safe_load(file)
+
+def convert_fast5_to_slow5(input_dir, output_dir, slow5tools_path, threads):
+    try:
+        check_call(
+            f"{slow5tools_path} fast5toslow5 -d {output_dir} -p {threads} {input_dir}".split()
+        )
+        print(f"FAST5 to SLOW5/BLOW5 conversion completed. Results saved to {output_dir}")
+    except CalledProcessError as e:
+        print(f"slow5tools fast5toslow5 failed with exit status {e.returncode}")
+        print(f"Command: {e.cmd}")
+        raise
+
+def convert_pod5_to_slow5(input_dir, output_dir, blue_crab_path, threads):
+    try:
+        check_call(
+            f"{blue_crab_path} p2s -d {output_dir} -p {threads} {input_dir}".split()
+        )
+        print(f"POD5 to SLOW5/BLOW5 conversion completed. Results saved to {output_dir}")
+    except CalledProcessError as e:
+        print(f"blue-crab p2s failed with exit status {e.returncode}")
+        print(f"Command: {e.cmd}")
+        raise
+
+def main():
+    config_file = sys.argv[2]
+    output = Path(sys.argv[4])
+
+    cfg = load_config(config_file)
+
+    input_dir = cfg['input_dir']
+    slow5_output_dir = output / "slow5_output"
+    slow5_output_dir.mkdir(parents=True, exist_ok=True)
+    threads = cfg['threads']
+    slow5tools_path = cfg['slow5tools_path']
+    blue_crab_path = cfg['blue_crab_path']
+
+    # Detect if input is FAST5 or POD5 and convert accordingly
+    if any(file.endswith('.fast5') for file in os.listdir(input_dir)):
+        convert_fast5_to_slow5(input_dir, slow5_output_dir, slow5tools_path, threads)
+    elif any(file.endswith('.pod5') for file in os.listdir(input_dir)):
+        convert_pod5_to_slow5(input_dir, slow5_output_dir, blue_crab_path, threads)
+    else:
+        print("No FAST5 or POD5 files found in the input directory.")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
