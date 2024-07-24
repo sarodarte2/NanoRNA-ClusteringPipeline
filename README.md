@@ -2,10 +2,8 @@
 
 This repository contains the NanoRNA-ClusteringPipeline, designed for analyzing Direct RNA sequencing data from raw Oxford Nanopore Technologies (ONT) FAST5 files. The pipeline includes steps for splitting multi-read FAST5 files, indexing reads, aligning and filtering FASTQ reads, clustering RNA reads, and estimating Poly(A) tail lengths using a variety of tools.
 
-## Current Experimental Steps to Take
-1. Optional run for Nanopolish EventAlign.
-2. Setup GPU computing for F5C.
-3. Optional run for Modification (differential/raw-read) analysis.
+## Current Branch Steps to Consider:
+1. NVIDIA Docker, and cloud instant run. 
 
 ## Table of Contents
 - [Installation](#installation)
@@ -58,6 +56,9 @@ multi_to_single_fast5_path: /path/to/multi_to_single_fast5
 # Path to the Nanopolish executable.
 nanopolish_path: /path/to/nanopolish/nanopolish
 
+# Path to the f5c executable.
+f5c_path: /path/to/f5c/f5c_x86_64_linux_cuda  # or f5c_x86_64_linux for CPU-only
+
 # Directory where the pipeline outputs will be stored.
 output: /path/to/pipeline_outputs
 
@@ -90,7 +91,7 @@ If you are running the pipeline manually using the scripts, you will need to upd
 ./run_pipeline.sh
 ```
 ## Docker
-You can also use Docker to run the pipeline in a containerized environment. Build the Docker image using the provided Dockerfile:
+You can also use Docker to run the pipeline in a containerized environment. Do note the f5c instant of the Docker build will not be GPU accelerated. We are considering making an NVIDIA-Docker appropiately but that requires extra setup. Build the Docker image using the provided Dockerfile:
 
 ```bash
 docker build -t nanorna-clustering-pipeline .
@@ -108,6 +109,7 @@ docker run -e FASTQ_PATH=/path/to/fastq -e FAST5_PATH=/path/to/fast5 -e REF_PATH
 - Samtools
 - GeLuster
 - PycoQC
+- f5c
 
 ## Pipeline Steps
 1. **Split FAST5 Files:** Converts multi-read FAST5 files into single-read FAST5 files.
@@ -116,6 +118,7 @@ docker run -e FASTQ_PATH=/path/to/fastq -e FAST5_PATH=/path/to/fast5 -e REF_PATH
 4. **Generate PycoQC Report:** Generates a quality control report using PycoQC.
 5. **Cluster Reads:** Clusters RNA reads using GeLuster, with support for clustering multiple samples.
 6. **Estimate Poly(A) Tail Lengths:** Estimates the lengths of Poly(A) tails using Nanopolish.
+7. **Event Alignment:** Aligns events using f5c, with support for GPU acceleration if CUDA is installed.
 
 ## Logging
 A single log file is generated for each pipeline run, located in the 'logs' directory specified in the configuration file. The log file is named with the current date and time for easy identification.
@@ -127,6 +130,7 @@ A single log file is generated for each pipeline run, located in the 'logs' dire
 - [samtools](https://github.com/samtools/samtools)
 - [GeLuster](https://github.com/GeLuster)
 - [PycoQC](https://github.com/a-slide/pycoQC)
+- [f5c](https://github.com/hasindu2008/f5c)
 
 ## Contributing
 
