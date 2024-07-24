@@ -36,7 +36,7 @@ To set up the environment and install all dependencies, run the provided setup s
 ```
 
 ## Configuration
-The pipeline requires a configuration file in YAML format. Here is an example `pipeline_config.yaml`:
+The pipeline requires a configuration file in YAML format. If running the pipeline locally, change the paths in the yaml file for FastQ, FAST5, sequencing summary, and reference fasta file. Here is an example `pipeline_config.yaml`:
 ```yaml
 # Path to the Minimap2 executable.
 aligner_path: /path/to/minimap2
