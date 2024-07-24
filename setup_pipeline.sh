@@ -12,10 +12,7 @@ mkdir -p tools
 
 # Update and install system dependencies
 sudo apt-get update
-sudo apt-get install -y build-essential wget git python3 python3-venv python3-pip gcc g++-9 make zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libncurses5-dev samtools minimap2
-
-# Update alternatives to use g++-9 as the default compiler
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 100
+sudo apt-get install -y build-essential wget git python3 python3-venv python3-pip zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libncurses5-dev samtools minimap2
 
 # Download and install VBZ compression plugin
 wget https://github.com/nanoporetech/vbz_compression/releases/download/1.0.2/ont-vbz-hdf-plugin_1.0.2-1.bionic_amd64.deb -O ~/local/ont-vbz-hdf-plugin_1.0.2-1.bionic_amd64.deb
@@ -33,8 +30,14 @@ source env/bin/activate
 pip install -r requirements.txt
 
 # Install additional tools
-# ont-fast5-api
 pip install ont-fast5-api pycoqc
+
+# Download and extract f5c portable binaries
+VERSION=v1.4
+wget "https://github.com/hasindu2008/f5c/releases/download/$VERSION/f5c-$VERSION-binaries.tar.gz"
+tar xvf f5c-$VERSION-binaries.tar.gz
+mv f5c-$VERSION/ tools/f5c
+rm -rf f5c-$VERSION-binaries.tar.gz
 
 # Nanopolish
 if [ ! -d "tools/nanopolish" ]; then
@@ -57,6 +60,7 @@ else
 fi
 
 # Get the absolute paths for the tools
+F5C_PATH=$(pwd)/tools/f5c/f5c_x86_64_linux
 NANOPOLISH_PATH=$(pwd)/tools/nanopolish/nanopolish
 MINIMAP2_PATH=$(which minimap2)
 GELUSTER_PATH=$(pwd)/tools/GeLuster/GeLuster
@@ -68,6 +72,7 @@ MULTI_TO_SINGLE_FAST5_PATH=$(which multi_to_single_fast5)
 CONFIG_FILE=$(pwd)/config/pipeline_config.yaml
 
 # Update the configuration file with the correct paths
+sed -i "s|f5c_path:.*|f5c_path: $F5C_PATH|" $CONFIG_FILE
 sed -i "s|nanopolish_path:.*|nanopolish_path: $NANOPOLISH_PATH|" $CONFIG_FILE
 sed -i "s|aligner_path:.*|aligner_path: $MINIMAP2_PATH|" $CONFIG_FILE
 sed -i "s|geluster_path:.*|geluster_path: $GELUSTER_PATH|" $CONFIG_FILE
@@ -76,6 +81,7 @@ sed -i "s|pycoqc_path:.*|pycoqc_path: $PYCOQC_PATH|" $CONFIG_FILE
 sed -i "s|multi_to_single_fast5_path:.*|multi_to_single_fast5_path: $MULTI_TO_SINGLE_FAST5_PATH|" $CONFIG_FILE
 
 # Export paths to ~/.bashrc for future sessions
+echo 'export PATH=$PATH:'$(pwd)'/tools/f5c' >> ~/.bashrc
 echo 'export PATH=$PATH:'$(pwd)'/tools/nanopolish' >> ~/.bashrc
 echo 'export PATH=$PATH:'$(pwd)'/tools/GeLuster' >> ~/.bashrc
 echo 'export HDF5_PLUGIN_PATH=/usr/local/hdf5/lib/plugin' >> ~/.bashrc
