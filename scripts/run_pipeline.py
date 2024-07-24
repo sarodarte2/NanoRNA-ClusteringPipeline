@@ -10,6 +10,7 @@ from pathlib import Path
 import config
 import logging
 from datetime import datetime
+import multiprocessing
 
 def parse_args():
     """
@@ -32,6 +33,7 @@ def setup_output_directories(base_output):
         'cluster_output': output_dir / 'cluster',
         'polya_output': output_dir / 'polya',
         'pycoqc_output': output_dir / 'pycoqc',
+        'eventalign_output': output_dir / 'eventalign',
         'log_output': output_dir / 'logs'
     }
     for subdir in subdirs.values():
@@ -47,6 +49,12 @@ def setup_logging(log_output):
     logging.basicConfig(filename=log_file, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     return log_file
 
+def get_max_threads():
+    """
+    Get the maximum number of available threads.
+    """
+    return multiprocessing.cpu_count()
+
 def main():
     """
     Main function to execute the pipeline steps.
@@ -59,7 +67,12 @@ def main():
     output_dir, subdirs = setup_output_directories(base_output)
     log_file = setup_logging(subdirs['log_output'])
     
-    logging.info(f"Pipeline started. Output directory: {output_dir}")
+    # Dynamically set the maximum number of threads
+    max_threads = get_max_threads()
+    cfg['threads'] = max_threads
+    config.save_config(config_file, cfg)
+
+    logging.info(f"Pipeline started with {max_threads} threads. Output directory: {output_dir}")
 
     # Step 1: Split FAST5 files
     split_fast5_script = Path(__file__).parent / "split_fast5.py"
@@ -87,9 +100,14 @@ def main():
     logging.info("Step 5: Cluster reads completed successfully.")
 
     # Step 6: Poly-A tail estimation
-    polya_script = Path(__file__).parent / "polya_estimation.py"
+    polya_script = Path(__file__).parent / "estimate_polya.py"
     check_call(f"python3 {polya_script} --config {config_file} --output {subdirs['polya_output']}".split())
     logging.info("Step 6: Poly-A tail estimation completed successfully.")
+    
+    # Step 7: Event alignment
+    eventalign_script = Path(__file__).parent / "eventalign.py"
+    check_call(f"python3 {eventalign_script} --config {config_file} --output {subdirs['eventalign_output']}".split())
+    logging.info("Step 7: Event alignment completed successfully.")
 
     logging.info("Pipeline completed successfully.")
     print(f"Pipeline completed successfully. Log file: {log_file}")
