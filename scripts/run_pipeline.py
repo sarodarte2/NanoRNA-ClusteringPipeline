@@ -32,6 +32,7 @@ def setup_output_directories(base_output):
         'cluster_output': output_dir / 'cluster',
         'polya_output': output_dir / 'polya',
         'pycoqc_output': output_dir / 'pycoqc',
+        'eventalign_output': output_dir / 'eventalign',
         'log_output': output_dir / 'logs'
     }
     for subdir in subdirs.values():
@@ -87,12 +88,18 @@ def main():
     logging.info("Step 5: Cluster reads completed successfully.")
 
     # Step 6: Poly-A tail estimation
-    polya_script = Path(__file__).parent / "polya_estimation.py"
+    polya_script = Path(__file__).parent / "estimate_polya.py"
     check_call(f"python3 {polya_script} --config {config_file} --output {subdirs['polya_output']}".split())
     logging.info("Step 6: Poly-A tail estimation completed successfully.")
+    
+    # Step 7: Event alignment
+    eventalign_script = Path(__file__).parent / "eventalign.py"
+    check_call(f"python3 {eventalign_script} --config {config_file} --output {subdirs['eventalign_output']}".split())
+    logging.info("Step 7: Event alignment completed successfully.")
 
     logging.info("Pipeline completed successfully.")
     print(f"Pipeline completed successfully. Log file: {log_file}")
 
 if __name__ == "__main__":
     main()
+
