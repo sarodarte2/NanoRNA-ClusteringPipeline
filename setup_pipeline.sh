@@ -14,6 +14,32 @@ mkdir -p tools
 sudo apt-get update
 sudo apt-get install -y build-essential wget git python3 python3-venv python3-pip zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libncurses5-dev samtools minimap2
 
+# Verify and install CUDA if not already installed
+if ! command -v nvcc &> /dev/null
+then
+    echo "CUDA not found. Installing CUDA..."
+    # Verify CUDA-capable GPU
+    lspci | grep -i nvidia || (sudo update-pciids && lspci | grep -i nvidia)
+    
+    # Install kernel headers
+    sudo apt-get install linux-headers-$(uname -r)
+    
+    # Download and install CUDA toolkit
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-ubuntu2404.pin
+    sudo mv cuda-ubuntu2404.pin /etc/apt/preferences.d/cuda-repository-pin-600
+    wget https://developer.download.nvidia.com/compute/cuda/12.5.1/local_installers/cuda-repo-ubuntu2404-12-5-local_12.5.1-555.42.06-1_amd64.deb
+    sudo dpkg -i cuda-repo-ubuntu2404-12-5-local_12.5.1-555.42.06-1_amd64.deb
+    sudo cp /var/cuda-repo-ubuntu2404-12-5-local/cuda-*-keyring.gpg /usr/share/keyrings/
+    sudo apt-get update
+    sudo apt-get -y install cuda-toolkit-12-5
+    
+    # Install NVIDIA drivers
+    sudo apt-get install -y nvidia-driver-555-open
+    sudo apt-get install -y cuda-drivers-555
+else
+    echo "CUDA already installed."
+fi
+
 # Download and install VBZ compression plugin
 wget https://github.com/nanoporetech/vbz_compression/releases/download/1.0.2/ont-vbz-hdf-plugin_1.0.2-1.bionic_amd64.deb -O ~/local/ont-vbz-hdf-plugin_1.0.2-1.bionic_amd64.deb
 sudo dpkg -i ~/local/ont-vbz-hdf-plugin_1.0.2-1.bionic_amd64.deb
@@ -36,8 +62,16 @@ pip install ont-fast5-api pycoqc
 VERSION=v1.4
 wget "https://github.com/hasindu2008/f5c/releases/download/$VERSION/f5c-$VERSION-binaries.tar.gz"
 tar xvf f5c-$VERSION-binaries.tar.gz
-mv f5c-$VERSION/ tools/f5c
-rm -rf f5c-$VERSION-binaries.tar.gz
+mv f5c-$VERSION/* tools/f5c/
+rm -rf f5c-$VERSION-binaries.tar.gz f5c-$VERSION
+
+# Check if CUDA is installed and select the appropriate f5c binary
+if command -v nvcc &> /dev/null
+then
+    F5C_PATH=$(pwd)/tools/f5c/f5c_x86_64_linux_cuda
+else
+    F5C_PATH=$(pwd)/tools/f5c/f5c_x86_64_linux
+fi
 
 # Nanopolish
 if [ ! -d "tools/nanopolish" ]; then
@@ -60,7 +94,6 @@ else
 fi
 
 # Get the absolute paths for the tools
-F5C_PATH=$(pwd)/tools/f5c/f5c_x86_64_linux
 NANOPOLISH_PATH=$(pwd)/tools/nanopolish/nanopolish
 MINIMAP2_PATH=$(which minimap2)
 GELUSTER_PATH=$(pwd)/tools/GeLuster/GeLuster
