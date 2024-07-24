@@ -27,7 +27,6 @@ def setup_output_directories(base_output):
     date_str = datetime.now().strftime('%Y%m%d_%H%M%S')
     output_dir = Path(base_output) / f"{date_str}_output"
     subdirs = {
-        'split_fast5_output': output_dir / 'fast5s',
         'index_output': output_dir / 'index',
         'alignment_output': output_dir / 'alignment',
         'cluster_output': output_dir / 'cluster',
@@ -74,43 +73,39 @@ def main():
 
     logging.info(f"Pipeline started with {max_threads} threads. Output directory: {output_dir}")
 
-    # Step 1: Split FAST5 files
-    split_fast5_script = Path(__file__).parent / "split_fast5.py"
-    check_call(f"python3 {split_fast5_script} --config {config_file} --output {subdirs['split_fast5_output']}".split())
-    logging.info("Step 1: Split FAST5 files completed successfully.")
-
-    # Step 2: Index reads
+    # Step 1: Index reads
     index_reads_script = Path(__file__).parent / "index_reads.py"
     check_call(f"python3 {index_reads_script} --config {config_file} --output {subdirs['index_output']}".split())
-    logging.info("Step 2: Index reads completed successfully.")
+    logging.info("Step 1: Index reads completed successfully.")
 
-    # Step 3: Align and filter FASTQ reads
+    # Step 2: Align and filter FASTQ reads
     align_script = Path(__file__).parent / "align.py"
     check_call(f"python3 {align_script} --config {config_file} --output {subdirs['alignment_output']}".split())
-    logging.info("Step 3: Align and filter FASTQ reads completed successfully.")
+    logging.info("Step 2: Align and filter FASTQ reads completed successfully.")
 
-    # Step 4: Generate PycoQC report
+    # Step 3: Generate PycoQC report
     pycoqc_script = Path(__file__).parent / "pycoqc_report.py"
     check_call(f"python3 {pycoqc_script} --config {config_file} --output {subdirs['pycoqc_output']}".split())
-    logging.info("Step 4: Generate PycoQC report completed successfully.")
+    logging.info("Step 3: Generate PycoQC report completed successfully.")
 
-    # Step 5: Cluster reads
+    # Step 4: Cluster reads
     cluster_script = Path(__file__).parent / "cluster_reads.py"
     check_call(f"python3 {cluster_script} --config {config_file} --output {subdirs['cluster_output']}".split())
-    logging.info("Step 5: Cluster reads completed successfully.")
+    logging.info("Step 4: Cluster reads completed successfully.")
 
-    # Step 6: Poly-A tail estimation
+    # Step 5: Poly-A tail estimation
     polya_script = Path(__file__).parent / "estimate_polya.py"
     check_call(f"python3 {polya_script} --config {config_file} --output {subdirs['polya_output']}".split())
-    logging.info("Step 6: Poly-A tail estimation completed successfully.")
+    logging.info("Step 5: Poly-A tail estimation completed successfully.")
     
-    # Step 7: Event alignment
+    # Step 6: Event alignment
     eventalign_script = Path(__file__).parent / "eventalign.py"
     check_call(f"python3 {eventalign_script} --config {config_file} --output {subdirs['eventalign_output']}".split())
-    logging.info("Step 7: Event alignment completed successfully.")
+    logging.info("Step 6: Event alignment completed successfully.")
 
     logging.info("Pipeline completed successfully.")
     print(f"Pipeline completed successfully. Log file: {log_file}")
 
 if __name__ == "__main__":
     main()
+
