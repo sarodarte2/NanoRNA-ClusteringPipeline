@@ -1,6 +1,6 @@
 # NanoRNA-ClusteringPipeline
 
-This repository contains the NanoRNA-ClusteringPipeline, designed for analyzing Direct RNA sequencing data from raw Oxford Nanopore Technologies (ONT) FAST5 files. The pipeline includes steps for splitting multi-read FAST5 files, indexing reads, aligning and filtering FASTQ reads, clustering RNA reads, and estimating Poly(A) tail lengths, and managing the alignment of events to raw reads by using a variety of tools in a single run.
+This repository contains the NanoRNA-ClusteringPipeline, designed for analyzing Direct RNA sequencing data from raw Oxford Nanopore Technologies (ONT) FAST5 files. The pipeline includes steps for splitting multi-read FAST5 files, indexing reads, aligning and filtering FASTQ reads, clustering RNA reads, and estimating Poly(A) tail lengths using a variety of tools.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -111,7 +111,6 @@ docker run -e FASTQ_PATH=/path/to/fastq -e FAST5_PATH=/path/to/fast5 -e REF_PATH
 4. **Generate PycoQC Report:** Generates a quality control report using PycoQC.
 5. **Cluster Reads:** Clusters RNA reads using GeLuster, with support for clustering multiple samples.
 6. **Estimate Poly(A) Tail Lengths:** Estimates the lengths of Poly(A) tails using Nanopolish.
-7. **Event Alignment:** Aligns events using Nanopolish. 
 
 
 ## Logging
